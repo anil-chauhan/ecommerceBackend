@@ -4,6 +4,7 @@ package org.ecommerce.shared_database_api.controllers;
 import org.ecommerce.shared_database_api.models.User;
 import org.ecommerce.shared_database_api.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,7 +19,9 @@ public class UserController {
         this.userService = userService;
     }
 
+
     @PostMapping(value = "/create_new_user")
+    @PostAuthorize("hasRole('USER')")
     public void createNewUser(@RequestBody User newUser) {
         userService.createUser(newUser);
     }
