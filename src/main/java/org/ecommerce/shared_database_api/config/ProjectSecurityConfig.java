@@ -53,20 +53,26 @@ public class ProjectSecurityConfig {
                             return config;
                         }
                     }))
+
+                    // for remove endpoint from security check, then add url in ignoringRequestMatchers, and
+                    //requestMatchers.("/endpoint").permitAll()
+                    // and remove from .requestMatchers("/create_category").hasRole("ADMIN")
+
                     .csrf(csrfConfig -> csrfConfig.csrfTokenRequestHandler(csrfTokenRequestAttributeHandler)
-                            .ignoringRequestMatchers("/contact", "/register")
+                            .ignoringRequestMatchers("/contact", "/register","/create_category","/add_product")
                             .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
                     .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
                     .requiresChannel(rcc -> rcc.anyRequest().requiresInsecure()) // Only HTTP
                     .authorizeHttpRequests((requests) -> requests
                             .requestMatchers("/create_new_user").hasRole("USER")
                             //.requestMatchers("/create_category").hasRole("ADMIN")
+                            //.requestMatchers("/create_category").permitAll()
                             .requestMatchers("/myAccount").hasRole("USER")
                             .requestMatchers("/myBalance").hasAnyRole("USER", "ADMIN")
                             .requestMatchers("/myLoans").authenticated()
                             .requestMatchers("/myCards").hasRole("USER")
                             .requestMatchers("/user").authenticated()
-                            .requestMatchers("/notices", "/contact", "/error", "/register").permitAll());
+                            .requestMatchers("/notices", "/contact", "/error", "/create_category","add_product").permitAll());
             http.oauth2ResourceServer(rsc -> rsc.jwt(jwtConfigurer ->
                     jwtConfigurer.jwtAuthenticationConverter(jwtAuthenticationConverter)));
             /*http.oauth2ResourceServer(rsc -> rsc.opaqueToken(otc -> otc.authenticationConverter(new KeycloakOpaqueRoleConverter())

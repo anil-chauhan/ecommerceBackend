@@ -30,14 +30,24 @@ public class Product {
     @Column(name = "description", length = Integer.MAX_VALUE)
     private String description;
 
-    @Column(name = "price", nullable = false, precision = 10, scale = 2)
-    private BigDecimal price;
+    @Column(name = "price", nullable = false, precision = 10)
+    private Double price;
 
     @Column(name = "stock_quantity", nullable = false)
     private Integer stockQuantity;
 
     @Column(name = "status", nullable = false, length = 20)
     private String status;
+
+    @Column(name = "brand", nullable = false, length = 20)
+    private String brand;
+
+    @Column(name = "product_image_url", nullable = false, length = 20)
+    private String productImageUrl;
+
+
+
+
 
 
 
