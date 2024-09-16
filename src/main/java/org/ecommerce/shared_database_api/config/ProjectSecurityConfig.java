@@ -60,6 +60,7 @@ public class ProjectSecurityConfig {
                     .requiresChannel(rcc -> rcc.anyRequest().requiresInsecure()) // Only HTTP
                     .authorizeHttpRequests((requests) -> requests
                             .requestMatchers("/create_new_user").hasRole("USER")
+                            //.requestMatchers("/create_category").hasRole("ADMIN")
                             .requestMatchers("/myAccount").hasRole("USER")
                             .requestMatchers("/myBalance").hasAnyRole("USER", "ADMIN")
                             .requestMatchers("/myLoans").authenticated()
