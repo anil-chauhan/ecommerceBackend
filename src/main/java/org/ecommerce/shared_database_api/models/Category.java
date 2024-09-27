@@ -5,6 +5,8 @@ import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import java.util.List;
+
 @Entity
 @Table(name = "categories")
 @Getter
@@ -32,5 +34,7 @@ public class Category {
     @Column(name = "status", nullable = false, length = 20)
     private String status;
 
+    @OneToMany
+    private List<Product> products;
 
 }
