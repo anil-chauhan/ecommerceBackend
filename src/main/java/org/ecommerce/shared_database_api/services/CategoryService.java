@@ -6,6 +6,7 @@ import org.ecommerce.shared_database_api.models.Category;
 import org.ecommerce.shared_database_api.repo.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,13 +33,41 @@ public class CategoryService {
             return "Category creation failed";
         }
 
-
-
     }
 
     public  Category getCategoryById(int categoryId){
 
         Category save = categoryRepository.findCategoryByCategoryId(categoryId);
+        if(save!=null){
+            return save;
+        }
+        else {
+            return null;
+        }
+
+
+
+    }
+
+    public  List<Category> getSubCategoryByParentId(int parentCategoryId){
+
+        List<Category> save = categoryRepository.findSubCategoryByParentCategoryId(parentCategoryId);
+        if(save!=null){
+            return save;
+        }
+        else {
+            return null;
+        }
+
+
+
+    }
+
+
+
+    public  Category getCategoryByName(String categoryName){
+
+        Category save = categoryRepository.findCategoryByCategoryName(categoryName);
         if(save!=null){
             return save;
         }
@@ -77,5 +106,27 @@ public class CategoryService {
 
 
     }
+
+
+    public  boolean isSubCategoryAvailable(CategoryDto categoryDto){
+
+
+
+        Category category = getCategoryByName(categoryDto.getCategoryName());
+        // find if any subcategory is available or not
+        if(category.getParentCat() == null) {
+            List<Category> subCategoryByParent = getSubCategoryByParentId(category.getCategoryId());
+            if(subCategoryByParent!=null){
+                return true;
+            }
+
+            //Category parentCat = category.getParentCat();
+            //return Optional.ofNullable(parentCat);
+
+        }
+        return false;
+
+    }
+
 
 }

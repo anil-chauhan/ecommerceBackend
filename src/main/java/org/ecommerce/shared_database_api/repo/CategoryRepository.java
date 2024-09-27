@@ -5,11 +5,18 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface CategoryRepository extends JpaRepository<Category, Integer> {
 
     @Query(value = "select cat from Category as cat where cat.categoryId=:categoryId")
     Category findCategoryByCategoryId(@Param("categoryId") Integer categoryId);
+
+    @Query(value = "select cat from Category as cat where cat.categoryName=:categoryName")
+    Category findCategoryByCategoryName(@Param("categoryName") String categoryName);
+
+    @Query(value = "select cat from Category as cat where cat.parentCat.categoryId=:parentCategoryId")
+    List<Category> findSubCategoryByParentCategoryId(@Param("parentCategoryId") int parentCategoryId);
 }
 

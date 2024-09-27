@@ -15,11 +15,13 @@ import java.util.List;
 public class ProductService {
 
     private final ProductRepository productRepository;
+    private final CategoryService categoryService;
 
 
     @Autowired
-    public ProductService(ProductRepository productRepository) {
+    public ProductService(ProductRepository productRepository,CategoryService categoryService) {
         this.productRepository = productRepository;
+        this.categoryService = categoryService;
     }
 
 
@@ -49,9 +51,12 @@ public class ProductService {
 
     }
 
-    public  List<ProductDto> getAllProductByCategoryId(int categoryId){
+    public  List<ProductDto> getAllProductByCategoryId(Category category){
 
-        List<Product> save = productRepository.findProductByCategoryId(categoryId);
+
+
+
+        List<Product> save = productRepository.findProductByCategoryId(category.getCategoryId());
 
         List<ProductDto> productDtos = new ArrayList<>();
         if(save!=null){

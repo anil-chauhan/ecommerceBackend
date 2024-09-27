@@ -8,14 +8,13 @@ import org.ecommerce.shared_database_api.models.Product;
 import org.ecommerce.shared_database_api.services.CategoryService;
 import org.ecommerce.shared_database_api.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
+@CrossOrigin(value = "http://localhost:4200")
 public class ProductController {
 
 
@@ -55,7 +54,24 @@ public class ProductController {
 
         Category categoryById = categoryService.getCategoryById(productDto.getCategoryId());
 
-        return productService.getAllProductByCategoryId(categoryById.getCategoryId());
+        return productService.getAllProductByCategoryId(categoryById);
+    }
+
+    @PostMapping("/get_all_product_from_a_category_by_name")
+    //@PostAuthorize("hasRole('ADMIN')")
+    public Optional<Object> getAllProductFromACategoryByName(@RequestBody CategoryDto categoryDto) {
+        Category category = categoryService.getCategoryByName(categoryDto.getCategoryName());
+        // find if any subcategory is available or not
+        if(category.getParentCat() == null) {
+            List<Category> subCategoryByParent = categoryService.getSubCategoryByParentId(category.getCategoryId());
+            if(subCategoryByParent!=null){
+                return Optional.ofNullable(subCategoryByParent);
+            }
+            //Category parentCat = category.getParentCat();
+            //return Optional.ofNullable(parentCat);
+
+        }
+        return Optional.ofNullable(productService.getAllProductByCategoryId(category));
     }
 
 

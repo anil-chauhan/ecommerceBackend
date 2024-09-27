@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 public class CategoryController {
 
 
@@ -47,6 +48,12 @@ public class CategoryController {
     //@PostAuthorize("hasRole('ADMIN')")
     public List<CategoryDto> getAllCategory() {
         return categoryService.getAllCategories();
+    }
+
+    @PostMapping("/is_sub_category_available")
+    //@PostAuthorize("hasRole('ADMIN')")
+    public boolean isSubCategoryAvailable(@RequestBody CategoryDto categoryDto) {
+            return categoryService.isSubCategoryAvailable(categoryDto);
     }
 
 }

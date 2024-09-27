@@ -17,7 +17,7 @@ public class Category {
     @Column(name = "category_id", nullable = false)
     private Integer categoryId;
 
-    @Column(name = "category_name", nullable = false, length = 100)
+    @Column(name = "category_name", nullable = false,unique = true, length = 100)
     private String categoryName;
 
     @Column(name = "url_slug", nullable = false, length = Integer.MAX_VALUE)
