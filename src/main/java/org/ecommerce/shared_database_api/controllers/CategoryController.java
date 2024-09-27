@@ -7,10 +7,9 @@ import org.ecommerce.shared_database_api.services.CategoryService;
 import org.ecommerce.shared_database_api.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PostAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 public class CategoryController {
@@ -41,6 +40,13 @@ public class CategoryController {
         category.setStatus(categoryDto.getStatus());
 
         return categoryService.createCategory(category);
+    }
+
+
+    @GetMapping("/get_all_category")
+    //@PostAuthorize("hasRole('ADMIN')")
+    public List<CategoryDto> getAllCategory() {
+        return categoryService.getAllCategories();
     }
 
 }

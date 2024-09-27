@@ -59,7 +59,7 @@ public class ProjectSecurityConfig {
                     // and remove from .requestMatchers("/create_category").hasRole("ADMIN")
 
                     .csrf(csrfConfig -> csrfConfig.csrfTokenRequestHandler(csrfTokenRequestAttributeHandler)
-                            .ignoringRequestMatchers("/contact", "/register","/create_category","/add_product")
+                            .ignoringRequestMatchers("/contact", "/register","/create_category","/add_product","get_all_category")
                             .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
                     .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
                     .requiresChannel(rcc -> rcc.anyRequest().requiresInsecure()) // Only HTTP
@@ -72,7 +72,8 @@ public class ProjectSecurityConfig {
                             .requestMatchers("/myLoans").authenticated()
                             .requestMatchers("/myCards").hasRole("USER")
                             .requestMatchers("/user").authenticated()
-                            .requestMatchers("/notices", "/contact", "/error", "/create_category","add_product").permitAll());
+                            .requestMatchers("/notices", "/contact", "/error", "/create_category","add_product",
+                                    "get_all_category").permitAll());
             http.oauth2ResourceServer(rsc -> rsc.jwt(jwtConfigurer ->
                     jwtConfigurer.jwtAuthenticationConverter(jwtAuthenticationConverter)));
             /*http.oauth2ResourceServer(rsc -> rsc.opaqueToken(otc -> otc.authenticationConverter(new KeycloakOpaqueRoleConverter())

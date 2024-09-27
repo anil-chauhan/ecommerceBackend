@@ -1,15 +1,19 @@
 package org.ecommerce.shared_database_api.controllers;
 
 
+import org.ecommerce.shared_database_api.dto.CategoryDto;
 import org.ecommerce.shared_database_api.dto.ProductDto;
 import org.ecommerce.shared_database_api.models.Category;
 import org.ecommerce.shared_database_api.models.Product;
 import org.ecommerce.shared_database_api.services.CategoryService;
 import org.ecommerce.shared_database_api.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 public class ProductController {
@@ -43,6 +47,15 @@ public class ProductController {
         Category categoryById = categoryService.getCategoryById(productDto.getCategoryId());
         product.setCat(categoryById);
         return productService.addProduct(product);
+    }
+
+    @GetMapping("/get_all_product_from_a_category_by_id")
+    //@PostAuthorize("hasRole('ADMIN')")
+    public List<ProductDto> getAllProductFromACategoryById( @RequestBody ProductDto productDto) {
+
+        Category categoryById = categoryService.getCategoryById(productDto.getCategoryId());
+
+        return productService.getAllProductByCategoryId(categoryById.getCategoryId());
     }
 
 
