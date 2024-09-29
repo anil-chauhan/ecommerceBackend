@@ -2,8 +2,10 @@ package org.ecommerce.shared_database_api.dto;
 
 import lombok.Data;
 import lombok.Value;
+import org.ecommerce.shared_database_api.models.Category;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * DTO for {@link org.ecommerce.shared_database_api.models.Category}
@@ -15,4 +17,6 @@ public class CategoryDto implements Serializable {
     String urlSlug;
     int parentCatCategoriesId;
     String status;
+    List<CategoryDto> subCategories;
+    private boolean isExpanded; // New property for expand/collapse state
 }

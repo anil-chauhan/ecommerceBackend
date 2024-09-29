@@ -1,6 +1,7 @@
 package org.ecommerce.shared_database_api.controllers;
 
 import org.ecommerce.shared_database_api.dto.CategoryDto;
+import org.ecommerce.shared_database_api.dto.CategoryTreeDto;
 import org.ecommerce.shared_database_api.models.Category;
 import org.ecommerce.shared_database_api.models.User;
 import org.ecommerce.shared_database_api.services.CategoryService;
@@ -46,8 +47,10 @@ public class CategoryController {
 
     @GetMapping("/get_all_category")
     //@PostAuthorize("hasRole('ADMIN')")
-    public List<CategoryDto> getAllCategory() {
-        return categoryService.getAllCategories();
+    public List<CategoryTreeDto> getAllCategory() {
+        //return categoryService.getAllCategories();
+        return categoryService.getMenuCategories();
+
     }
 
     @PostMapping("/is_sub_category_available")
