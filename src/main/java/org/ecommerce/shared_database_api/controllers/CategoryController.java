@@ -44,6 +44,24 @@ public class CategoryController {
         return categoryService.createCategory(category);
     }
 
+    @PostMapping("/create_category_by_name")
+    //@PostAuthorize("hasRole('ADMIN')")
+    public String createCategoryByName( @RequestBody CategoryDto categoryDto) {
+
+        Category category = new Category();
+        Category categoryById = categoryService.getCategoryByName(categoryDto.getParentCatCategoriesName());
+        category.setParentCat(categoryById);
+        category.setCategoryName(categoryDto.getCategoryName());
+        category.setUrlSlug(categoryDto.getUrlSlug());
+        if(categoryDto.getUrlSlug()==null) {
+            category.setUrlSlug("");
+        }
+        category.setStatus(categoryDto.getStatus());
+
+        return categoryService.createCategory(category);
+    }
+
+
 
     @GetMapping("/get_all_category")
     //@PostAuthorize("hasRole('ADMIN')")

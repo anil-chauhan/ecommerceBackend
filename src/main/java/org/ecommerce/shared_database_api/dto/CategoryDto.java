@@ -16,6 +16,7 @@ public class CategoryDto implements Serializable {
     String categoryName;
     String urlSlug;
     int parentCatCategoriesId;
+    String parentCatCategoriesName;
     String status;
     List<CategoryDto> subCategories;
     private boolean isExpanded; // New property for expand/collapse state
