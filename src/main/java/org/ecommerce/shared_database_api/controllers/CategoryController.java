@@ -1,5 +1,6 @@
 package org.ecommerce.shared_database_api.controllers;
 
+import lombok.Data;
 import org.ecommerce.shared_database_api.dto.CategoryDto;
 import org.ecommerce.shared_database_api.dto.CategoryTreeDto;
 import org.ecommerce.shared_database_api.models.Category;
@@ -26,9 +27,15 @@ public class CategoryController {
     }
 
 
+    @Data
+    class CategoryResponseMessage{
+        String message;
+    }
+
+
     @PostMapping("/create_category")
     //@PostAuthorize("hasRole('ADMIN')")
-    public String createCategory( @RequestBody CategoryDto categoryDto) {
+    public CategoryResponseMessage createCategory( @RequestBody CategoryDto categoryDto) {
 
         Category category = new Category();
         if(categoryDto.getParentCatCategoriesId()==0){
@@ -41,12 +48,22 @@ public class CategoryController {
         category.setUrlSlug(categoryDto.getUrlSlug());
         category.setStatus(categoryDto.getStatus());
 
-        return categoryService.createCategory(category);
+        String category1 = categoryService.createCategory(category);
+
+        CategoryResponseMessage responseMessage = new CategoryResponseMessage();
+        responseMessage.message = category1;
+
+        return responseMessage;
     }
+
+
+
+
+
 
     @PostMapping("/create_category_by_name")
     //@PostAuthorize("hasRole('ADMIN')")
-    public String createCategoryByName( @RequestBody CategoryDto categoryDto) {
+    public CategoryResponseMessage createCategoryByName( @RequestBody CategoryDto categoryDto) {
 
         Category category = new Category();
         Category categoryById = categoryService.getCategoryByName(categoryDto.getParentCatCategoriesName());
@@ -58,7 +75,12 @@ public class CategoryController {
         }
         category.setStatus(categoryDto.getStatus());
 
-        return categoryService.createCategory(category);
+        String category1 = categoryService.createCategory(category);
+
+        CategoryResponseMessage responseMessage = new CategoryResponseMessage();
+        responseMessage.message = category1;
+
+        return responseMessage;
     }
 
 

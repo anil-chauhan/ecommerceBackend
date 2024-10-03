@@ -8,7 +8,11 @@ import org.ecommerce.shared_database_api.repo.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 @Service
@@ -73,6 +77,8 @@ public class ProductService {
                 productDto.setStatus(product.getStatus());
                 productDto.setBrand(product.getBrand());
                 productDto.setProductImageUrl(product.getProductImageUrl());
+                String s = convertImageToBase64(product.getProductImageUrl());
+                productDto.setProductImageUrl(s);
                 productDto.setCategoryId(product.getCat().getCategoryId());
                 //Category categoryById = categoryService.getCategoryById(productDto.getCategoryId());
                 //productDto.setCat(categoryById);
@@ -90,4 +96,26 @@ public class ProductService {
 
 
     }
+
+    public String convertImageToBase64(String imagePath) {
+        try {
+
+
+
+            // Read the image file into a byte array
+            File imageFile = new File(imagePath);
+            byte[] imageBytes = Files.readAllBytes(imageFile.toPath());
+
+            // Encode the byte array to a Base64 string
+            String base64Image = Base64.getEncoder().encodeToString(imageBytes);
+
+            // Return the Base64 string prefixed with the appropriate data type
+            return "data:image/png;base64," + base64Image; // Adjust the MIME type if necessary
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null; // Handle error appropriately
+        }
+    }
+
+
 }

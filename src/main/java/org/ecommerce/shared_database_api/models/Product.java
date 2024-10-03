@@ -42,7 +42,7 @@ public class Product {
     @Column(name = "brand", nullable = false, length = 20)
     private String brand;
 
-    @Column(name = "product_image_url", nullable = false, length = 20)
+    @Column(name = "product_image_url", nullable = false, length = 1000)
     private String productImageUrl;
 
 
