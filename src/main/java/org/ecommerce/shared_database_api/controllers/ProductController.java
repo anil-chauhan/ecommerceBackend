@@ -1,17 +1,16 @@
 package org.ecommerce.shared_database_api.controllers;
-
-
 import lombok.Data;
 import org.ecommerce.shared_database_api.dto.CategoryDto;
 import org.ecommerce.shared_database_api.dto.ProductDto;
+import org.ecommerce.shared_database_api.dto.ProductRequestParamDto;
 import org.ecommerce.shared_database_api.models.Category;
 import org.ecommerce.shared_database_api.models.Product;
 import org.ecommerce.shared_database_api.services.CategoryService;
 import org.ecommerce.shared_database_api.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -20,6 +19,9 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 @RestController
 @CrossOrigin(value = "http://localhost:4200")
@@ -168,6 +170,56 @@ public class ProductController {
 
         }
         return Optional.ofNullable(productService.getAllProductByCategoryId(category));
+    }
+
+
+    /*@PostMapping("/get_all_product_by_name")
+    //@PostAuthorize("hasRole('ADMIN')")
+    public List<ProductDto> getAllProductByName(@RequestParam("productName") String productName) {
+
+        Pageable my=new Pageable() {
+            @Override
+            public int getNumberOfPages() {
+                return 0;
+            }
+
+            @Override
+            public PageFormat getPageFormat(int pageIndex) throws IndexOutOfBoundsException {
+                return null;
+            }
+
+            @Override
+            public Printable getPrintable(int pageIndex) throws IndexOutOfBoundsException {
+                return null;
+            }
+        };
+
+        List<ProductDto> allProductByName = productService.getAllProductByName(productName, my);
+
+        return  allProductByName;
+
+    }*/
+
+    @PostMapping("/get_all_product_by_name")
+    public Page<ProductDto> getAllProductByName(@RequestBody ProductRequestParamDto productRequestParamDto) {
+
+
+        Integer pageNumber = productRequestParamDto.getPageNumber();
+        Integer pageSize = productRequestParamDto.getPageSize();
+        String productName = productRequestParamDto.getProductName();
+
+        //Sort sort = Sort.by(Sort.Direction.DESC, "propertyName1", "propertyName2");
+        //Pageable pageable = PageRequest.of(pageNumber, pageSize,sort);
+        if(pageSize==0){
+            pageSize=10;
+        }
+
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+
+
+        // Using the provided Pageable instead of creating a new instance
+        Page<ProductDto> allProductByName = productService.getAllProductByName(productName, pageable);
+        return allProductByName;
     }
 
 

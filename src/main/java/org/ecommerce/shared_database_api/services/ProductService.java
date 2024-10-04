@@ -6,7 +6,9 @@ import org.ecommerce.shared_database_api.models.Product;
 import org.ecommerce.shared_database_api.repo.CategoryRepository;
 import org.ecommerce.shared_database_api.repo.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
+
 
 import java.io.File;
 import java.io.IOException;
@@ -14,6 +16,8 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+
+import org.springframework.data.domain.Page;
 
 @Service
 public class ProductService {
@@ -116,6 +120,71 @@ public class ProductService {
             return null; // Handle error appropriately
         }
     }
+
+
+   /* public List<ProductDto> getAllProductByName(String productName, Pageable pageable){
+
+
+        Page<Product> productByName = productRepository.findProductByName(productName, pageable);
+
+
+        List<ProductDto> productDtos = new ArrayList<ProductDto>();
+        if(productByName!=null) {
+
+            for (Product product : productByName) {
+
+                ProductDto productDto = new ProductDto();
+                productDto.setProductName(product.getProductName());
+                productDto.setDescription(product.getDescription());
+                productDto.setPrice(product.getPrice());
+                productDto.setUrlSlug(product.getUrlSlug());
+                productDto.setDescription(product.getDescription());
+                productDto.setStockQuantity(product.getStockQuantity());
+                productDto.setStatus(product.getStatus());
+                productDto.setBrand(product.getBrand());
+                productDto.setProductImageUrl(product.getProductImageUrl());
+                String s = convertImageToBase64(product.getProductImageUrl());
+                productDto.setProductImageUrl(s);
+                productDto.setCategoryId(product.getCat().getCategoryId());
+                //Category categoryById = categoryService.getCategoryById(productDto.getCategoryId());
+                //productDto.setCat(categoryById);
+                productDtos.add(productDto);
+            }
+
+        }
+        return  productDtos;
+    }
+*/
+
+    public Page<ProductDto> getAllProductByName(String productName, Pageable pageable) {
+        // Get paginated products by name
+        Page<Product> productByName = productRepository.findProductByName(productName, pageable);
+
+
+        List<ProductDto> productDtos = new ArrayList<>();
+        if (productByName != null) {
+            for (Product product : productByName) {
+                ProductDto productDto = new ProductDto();
+                productDto.setProductName(product.getProductName());
+                productDto.setDescription(product.getDescription());
+                productDto.setPrice(product.getPrice());
+                productDto.setUrlSlug(product.getUrlSlug());
+                productDto.setDescription(product.getDescription());
+                productDto.setStockQuantity(product.getStockQuantity());
+                productDto.setStatus(product.getStatus());
+                productDto.setBrand(product.getBrand());
+                productDto.setProductImageUrl(product.getProductImageUrl());
+                String s = convertImageToBase64(product.getProductImageUrl());
+                productDto.setProductImageUrl(s);
+                productDto.setCategoryId(product.getCat().getCategoryId());
+                //Category categoryById = categoryService.getCategoryById(productDto.getCategoryId());
+                //productDto.setCat(categoryById);
+                productDtos.add(productDto);
+            }
+        }
+        return new PageImpl<>(productDtos, pageable, productByName.getTotalElements());
+    }
+
 
 
 }
