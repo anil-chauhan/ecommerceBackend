@@ -72,6 +72,7 @@ public class ProductService {
             for(Product product : save){
 
                 ProductDto productDto=new ProductDto();
+                productDto.setProductId(product.getProductId());
                 productDto.setProductName(product.getProductName());
                 productDto.setDescription(product.getDescription());
                 productDto.setPrice(product.getPrice());
@@ -122,39 +123,6 @@ public class ProductService {
     }
 
 
-   /* public List<ProductDto> getAllProductByName(String productName, Pageable pageable){
-
-
-        Page<Product> productByName = productRepository.findProductByName(productName, pageable);
-
-
-        List<ProductDto> productDtos = new ArrayList<ProductDto>();
-        if(productByName!=null) {
-
-            for (Product product : productByName) {
-
-                ProductDto productDto = new ProductDto();
-                productDto.setProductName(product.getProductName());
-                productDto.setDescription(product.getDescription());
-                productDto.setPrice(product.getPrice());
-                productDto.setUrlSlug(product.getUrlSlug());
-                productDto.setDescription(product.getDescription());
-                productDto.setStockQuantity(product.getStockQuantity());
-                productDto.setStatus(product.getStatus());
-                productDto.setBrand(product.getBrand());
-                productDto.setProductImageUrl(product.getProductImageUrl());
-                String s = convertImageToBase64(product.getProductImageUrl());
-                productDto.setProductImageUrl(s);
-                productDto.setCategoryId(product.getCat().getCategoryId());
-                //Category categoryById = categoryService.getCategoryById(productDto.getCategoryId());
-                //productDto.setCat(categoryById);
-                productDtos.add(productDto);
-            }
-
-        }
-        return  productDtos;
-    }
-*/
 
     public Page<ProductDto> getAllProductByName(String productName, Pageable pageable) {
         // Get paginated products by name
@@ -165,6 +133,7 @@ public class ProductService {
         if (productByName != null) {
             for (Product product : productByName) {
                 ProductDto productDto = new ProductDto();
+                productDto.setProductId(product.getProductId());
                 productDto.setProductName(product.getProductName());
                 productDto.setDescription(product.getDescription());
                 productDto.setPrice(product.getPrice());
@@ -183,6 +152,36 @@ public class ProductService {
             }
         }
         return new PageImpl<>(productDtos, pageable, productByName.getTotalElements());
+    }
+
+
+    public  ProductDto getProductById(Integer  productId){
+
+        Product product = productRepository.findProductByProductId(productId);
+        if(product!=null){
+                ProductDto productDto=new ProductDto();
+                productDto.setProductId(product.getProductId());
+                productDto.setProductName(product.getProductName());
+                productDto.setDescription(product.getDescription());
+                productDto.setPrice(product.getPrice());
+                productDto.setUrlSlug(product.getUrlSlug());
+                productDto.setDescription(product.getDescription());
+                productDto.setStockQuantity(product.getStockQuantity());
+                productDto.setStatus(product.getStatus());
+                productDto.setBrand(product.getBrand());
+                productDto.setProductImageUrl(product.getProductImageUrl());
+                String s = convertImageToBase64(product.getProductImageUrl());
+                productDto.setProductImageUrl(s);
+                productDto.setCategoryId(product.getCat().getCategoryId());
+
+            return productDto;
+        }
+        else {
+            return null;
+        }
+
+
+
     }
 
 

@@ -1,5 +1,7 @@
 package org.ecommerce.shared_database_api.controllers;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.ecommerce.shared_database_api.dto.CategoryDto;
 import org.ecommerce.shared_database_api.dto.ProductDto;
 import org.ecommerce.shared_database_api.dto.ProductRequestParamDto;
@@ -37,26 +39,6 @@ public class ProductController {
         this.productService = productService;
         this.categoryService = categoryService;
     }
-
-
-   /* @PostMapping("/add_product")
-    //@PostAuthorize("hasRole('ADMIN')")
-    public String addProduct( @RequestBody ProductDto productDto) {
-
-        Product product = new Product();
-        product.setProductName(productDto.getProductName());
-        product.setDescription(productDto.getDescription());
-        product.setPrice(productDto.getPrice());
-        product.setUrlSlug(productDto.getUrlSlug());
-        product.setDescription(productDto.getDescription());
-        product.setStockQuantity(productDto.getStockQuantity());
-        product.setStatus(productDto.getStatus());
-        product.setBrand(productDto.getBrand());
-        product.setProductImageUrl(productDto.getProductImageUrl());
-        Category categoryById = categoryService.getCategoryById(productDto.getCategoryId());
-        product.setCat(categoryById);
-        return productService.addProduct(product);
-    }*/
 
 
 
@@ -173,32 +155,7 @@ public class ProductController {
     }
 
 
-    /*@PostMapping("/get_all_product_by_name")
-    //@PostAuthorize("hasRole('ADMIN')")
-    public List<ProductDto> getAllProductByName(@RequestParam("productName") String productName) {
 
-        Pageable my=new Pageable() {
-            @Override
-            public int getNumberOfPages() {
-                return 0;
-            }
-
-            @Override
-            public PageFormat getPageFormat(int pageIndex) throws IndexOutOfBoundsException {
-                return null;
-            }
-
-            @Override
-            public Printable getPrintable(int pageIndex) throws IndexOutOfBoundsException {
-                return null;
-            }
-        };
-
-        List<ProductDto> allProductByName = productService.getAllProductByName(productName, my);
-
-        return  allProductByName;
-
-    }*/
 
     @PostMapping("/get_all_product_by_name")
     public Page<ProductDto> getAllProductByName(@RequestBody ProductRequestParamDto productRequestParamDto) {
@@ -219,6 +176,27 @@ public class ProductController {
 
         // Using the provided Pageable instead of creating a new instance
         Page<ProductDto> allProductByName = productService.getAllProductByName(productName, pageable);
+        return allProductByName;
+    }
+
+
+
+    @Data
+    @Getter
+    @Setter
+    public static class ProductDetailsRequest{
+        int productId;
+    }
+
+
+    @PostMapping("/get_product_by_id")
+    public ProductDto getProductById(@RequestBody() ProductDetailsRequest productDetailsRequest) {
+
+        Integer productId = productDetailsRequest.getProductId();
+
+
+        // Using the provided Pageable instead of creating a new instance
+        ProductDto allProductByName = productService.getProductById(productId);
         return allProductByName;
     }
 
