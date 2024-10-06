@@ -164,18 +164,29 @@ public class ProductController {
         Integer pageNumber = productRequestParamDto.getPageNumber();
         Integer pageSize = productRequestParamDto.getPageSize();
         String productName = productRequestParamDto.getProductName();
-
-        //Sort sort = Sort.by(Sort.Direction.DESC, "propertyName1", "propertyName2");
-        //Pageable pageable = PageRequest.of(pageNumber, pageSize,sort);
         if(pageSize==0){
             pageSize=10;
         }
-
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
-
-
         // Using the provided Pageable instead of creating a new instance
         Page<ProductDto> allProductByName = productService.getAllProductByName(productName, pageable);
+        return allProductByName;
+    }
+
+
+    @PostMapping("/get_all_product")
+    public Page<ProductDto> getAllProduct(@RequestBody ProductRequestParamDto productRequestParamDto) {
+
+
+        Integer pageNumber = productRequestParamDto.getPageNumber();
+        Integer pageSize = productRequestParamDto.getPageSize();
+        //String productName = productRequestParamDto.getProductName();
+        if(pageSize==0){
+            pageSize=10;
+        }
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        // Using the provided Pageable instead of creating a new instance
+        Page<ProductDto> allProductByName = productService.getAllProducts( pageable);
         return allProductByName;
     }
 
