@@ -18,7 +18,7 @@ public class OrderItem {
     @Column(name="id")
     private Long id;
 
-    @Column(name="image_url")
+    @Column(name="image_url" ,length=2000)
     private String imageUrl;
 
     @Column(name="unit_price")

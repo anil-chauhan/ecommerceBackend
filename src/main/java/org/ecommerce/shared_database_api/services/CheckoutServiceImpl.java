@@ -60,6 +60,12 @@ public class CheckoutServiceImpl implements CheckoutService {
 
         // populate order with orderItems
         Set<OrderItem> orderItems = purchase.getOrderItems();
+
+        for (OrderItem orderItem : orderItems) {
+
+            orderItem.setImageUrl("");
+        }
+
         orderItems.forEach(order::add);
 
         //save to database
