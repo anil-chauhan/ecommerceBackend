@@ -1,56 +1,82 @@
 package org.ecommerce.shared_database_api.models;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 
 import java.math.BigDecimal;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-@Table(name = "orders")
-@Data
+@Table(name="orders")
+@Getter
+@Setter
 public class Order {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "order_id", nullable = false)
-    private Integer orderId;
+    @Column(name="id")
+    private Long id;
 
-    @Column(name = "order_number", nullable = false, length = 50)
-    private String orderNumber;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @OnDelete(action = OnDeleteAction.SET_NULL)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @Column(name="order_tracking_number")
+    private String orderTrackingNumber;
 
-    @Column(name = "total_amount", nullable = false, precision = 10, scale = 2)
-    private BigDecimal totalAmount;
+    @Column(name="total_quantity")
+    private int totalQuantity;
 
-    @Column(name = "discount_amount", nullable = false, precision = 10, scale = 2)
-    private BigDecimal discountAmount;
+    @Column(name="total_price")
+    private BigDecimal totalPrice;
 
-    @Column(name = "gross_amount", nullable = false, precision = 10, scale = 2)
-    private BigDecimal grossAmount;
-
-    @Column(name = "shipping_amount", nullable = false, precision = 10, scale = 2)
-    private BigDecimal shippingAmount;
-
-    @Column(name = "net_amount", nullable = false, precision = 10, scale = 2)
-    private BigDecimal netAmount;
-
-    @Column(name = "status", nullable = false, length = 20)
+    @Column(name="status")
     private String status;
 
-    @Column(name = "payment_status", nullable = false, length = 20)
-    private String paymentStatus;
+    @Column(name="date_created")
+    @CreationTimestamp
+    private Date dateCreated;
 
-    @Column(name = "payment_type", nullable = false, length = 20)
-    private String paymentType;
+    @Column(name="last_updated")
+    @UpdateTimestamp
+    private Date lastUpdated;
 
-    @Column(name = "payment_transaction_id", length = 100)
-    private String paymentTransactionId;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "order")
+    private Set<OrderItem> orderItems = new HashSet<>();
 
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
+    private Customer customer;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "shipping_address_id", referencedColumnName = "id")
+    private Address shippingAddress;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "billing_address_id", referencedColumnName = "id")
+    private Address billingAddress;
+
+    public void add(OrderItem item) {
+
+        if (item != null) {
+            if (orderItems == null) {
+                orderItems = new HashSet<>();
+            }
+
+            orderItems.add(item);
+            item.setOrder(this);
+        }
+    }
 }
+
+
+
+
+
+
+
+
+

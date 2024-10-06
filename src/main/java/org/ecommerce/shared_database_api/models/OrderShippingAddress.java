@@ -17,7 +17,7 @@ public class OrderShippingAddress {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "order_id", nullable = false)
-    private Order order;
+    private Order orderOld;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "shipping_address_id", nullable = false)
