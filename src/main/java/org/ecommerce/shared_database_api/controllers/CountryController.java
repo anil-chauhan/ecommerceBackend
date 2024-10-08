@@ -34,5 +34,18 @@ public class CountryController {
         return all;
     }
 
+    @GetMapping("/hello")
+    //@PostAuthorize("hasRole('ADMIN')")
+    public List<Country> hello() {
+
+
+        List<Country> all = countryRepository.findAll();
+
+        return all;
+    }
+
+
+
+
 
 }

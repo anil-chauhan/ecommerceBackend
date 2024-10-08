@@ -26,7 +26,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 @RestController
-@CrossOrigin(value = "http://localhost:4200")
+//@CrossOrigin(value = "http://localhost:4200")
 public class ProductController {
 
 
