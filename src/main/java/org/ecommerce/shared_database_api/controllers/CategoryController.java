@@ -1,6 +1,7 @@
 package org.ecommerce.shared_database_api.controllers;
 
 import lombok.Data;
+import org.ecommerce.shared_database_api.dto.CategoryDetailsDto;
 import org.ecommerce.shared_database_api.dto.CategoryDto;
 import org.ecommerce.shared_database_api.dto.CategoryTreeDto;
 import org.ecommerce.shared_database_api.models.Category;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -92,6 +94,16 @@ public class CategoryController {
         return categoryService.getMenuCategories();
 
     }
+
+
+    @GetMapping("/get_all_category_details")
+    //@PostAuthorize("hasRole('ADMIN')")
+    public ArrayList<CategoryDetailsDto> getAllCategoryDetails() {
+        //return categoryService.getAllCategories();
+        return categoryService.getMenuCategoriesDetails();
+
+    }
+
 
     @PostMapping("/is_sub_category_available")
     //@PostAuthorize("hasRole('ADMIN')")

@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -190,6 +191,12 @@ public class ProductController {
         return allProductByName;
     }
 
+
+    @PostMapping("/get_all_trendy_product")
+    public ArrayList<ProductDto> getAllTrendyProduct() {
+        ArrayList<ProductDto> allProductByName = productService.getAllTrendyProducts();
+        return allProductByName;
+    }
 
 
     @Data

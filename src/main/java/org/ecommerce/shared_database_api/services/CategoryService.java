@@ -1,8 +1,10 @@
 package org.ecommerce.shared_database_api.services;
 
 
+import org.ecommerce.shared_database_api.dto.CategoryDetailsDto;
 import org.ecommerce.shared_database_api.dto.CategoryDto;
 import org.ecommerce.shared_database_api.dto.CategoryTreeDto;
+import org.ecommerce.shared_database_api.dto.ProductDto;
 import org.ecommerce.shared_database_api.models.Category;
 import org.ecommerce.shared_database_api.repo.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +17,12 @@ import java.util.*;
 public class CategoryService {
 
     private final CategoryRepository categoryRepository;
+    private final ProductService productService;
 
     @Autowired
-    public CategoryService(CategoryRepository categoryRepository) {
+    public CategoryService(CategoryRepository categoryRepository,ProductService productService) {
         this.categoryRepository = categoryRepository;
+        this.productService = productService;
     }
 
 
@@ -168,6 +172,14 @@ public class CategoryService {
         return buildCategoryTree(allCategories);
     }
 
+    public ArrayList<CategoryDetailsDto> getMenuCategoriesDetails() {
+        List<Category> allCategories = categoryRepository.findAll(); // Fetch all categories
+        return buildCategoryTreeDetails(allCategories);
+    }
+
+
+
+
     private List<CategoryDto> buildCategory(List<Category> categories) {
         Map<Integer, CategoryDto> categoryDtoMap = new HashMap<>();
         List<CategoryDto> rootCategoryDtos = new ArrayList<>();
@@ -209,22 +221,23 @@ public class CategoryService {
     }
 
 
-    private List<CategoryTreeDto> buildCategoryTree(List<Category> categories) {
+
+
+    private  ArrayList<CategoryDetailsDto> buildCategoryTreeDetails(List<Category> categories) {
+
+
         Map<Integer, CategoryTreeDto> categoryDtoMap = new HashMap<>();
+
+
         List<CategoryTreeDto> rootCategoryDtos = new ArrayList<>();
 
         // Create DTOs and populate the map
         for (Category category : categories) {
             CategoryTreeDto categoryDto = new CategoryTreeDto();
-            //categoryDto.setCategoryId(category.getCategoryId()); // Set the category ID
-            categoryDto.setCategoryName(category.getCategoryName());
-            //categoryDto.setUrlSlug(category.getUrlSlug());
-            //categoryDto.setStatus(category.getStatus());
-            //categoryDto.setExpanded(false); // Initialize isExpanded to false
 
+            categoryDto.setCategoryName(category.getCategoryName());
             categoryDto.setCategoryId(category.getCategoryId()); // Initialize isExpanded to false
             categoryDtoMap.put(category.getCategoryId(), categoryDto);
-
             // If the category has no parent, add it to the root list
             if (category.getParentCat() == null) {
                 rootCategoryDtos.add(categoryDto);
@@ -246,8 +259,120 @@ public class CategoryService {
 
         }
 
-        //rootCategoryDtos.remove(0);
+        List<CategoryTreeDto> rootCategoryDtosNew = new ArrayList<>();
+        List<CategoryTreeDto> subCategoriesLevel0 = rootCategoryDtos.get(0).getSubCategories();
 
+
+        ArrayList<CategoryDetailsDto> categoryDetails = getCategoryDetails(subCategoriesLevel0);
+
+
+        return categoryDetails; // Return the top-level categories
+    }
+
+
+    public ArrayList<CategoryDetailsDto> getCategoryDetails(List<CategoryTreeDto> subCategoriesLevel0){
+
+
+        ArrayList<CategoryDetailsDto> categoryDetailsDtos = new ArrayList<>();
+
+        ArrayList<Integer> allSubCategoryIds = new ArrayList<>();
+
+
+
+        for(CategoryTreeDto categoryTreeDto:subCategoriesLevel0){
+            CategoryDetailsDto categoryDetailsDto=new CategoryDetailsDto();
+            String categoryName = categoryTreeDto.getCategoryName();
+            categoryDetailsDto.setCategoryName(categoryName);
+            //categoryDetailsDtos.add(categoryDetailsDto);
+
+            List<CategoryTreeDto> subCategoriesLevel1 = categoryTreeDto.getSubCategories();
+
+            Integer categoryId = categoryTreeDto.getCategoryId();
+            allSubCategoryIds.add(categoryId);
+            allSubCategoryIds = getAllChildCategoryId(subCategoriesLevel1, allSubCategoryIds);
+
+
+            CategoryDetailsDto productCountByCategoryId = getProductCountByCategoryId(allSubCategoryIds, categoryDetailsDto);
+            categoryDetailsDtos.add(productCountByCategoryId);
+        }
+
+
+        return categoryDetailsDtos;
+    }
+
+
+
+    public CategoryDetailsDto getProductCountByCategoryId(ArrayList<Integer> allSubCategoryIds, CategoryDetailsDto categoryDetailsDto){
+
+
+        for (Integer categoryId : allSubCategoryIds) {
+
+            List<ProductDto> allProductCountByCategoryId = productService.getAllProductCountByCategoryId(categoryId);
+
+            if(allProductCountByCategoryId.size()>0){
+                categoryDetailsDto.setProductCountInCategory(allProductCountByCategoryId.size());
+                categoryDetailsDto.setProductRandomImageUrl(allProductCountByCategoryId.get(0).getProductImageUrl());
+            }
+
+        }
+
+        return  categoryDetailsDto;
+
+    }
+
+
+
+
+    public ArrayList<Integer> getAllChildCategoryId(List<CategoryTreeDto> subCategoriesLevel1, ArrayList<Integer> allSubCategoryIds){
+
+        for(CategoryTreeDto categoryTreeDto:subCategoriesLevel1){
+            //CategoryDetailsDto categoryDetailsDto=new CategoryDetailsDto();
+            Integer categoryId = categoryTreeDto.getCategoryId();
+            allSubCategoryIds.add(categoryId);
+            if(categoryTreeDto.getSubCategories()!=null){
+                List<CategoryTreeDto> subCategories1 = categoryTreeDto.getSubCategories();
+
+                getAllChildCategoryId(subCategories1,allSubCategoryIds);
+            }
+        }
+
+        return allSubCategoryIds;
+
+
+    }
+
+
+    private List<CategoryTreeDto> buildCategoryTree(List<Category> categories) {
+        Map<Integer, CategoryTreeDto> categoryDtoMap = new HashMap<>();
+        List<CategoryTreeDto> rootCategoryDtos = new ArrayList<>();
+
+        // Create DTOs and populate the map
+        for (Category category : categories) {
+            CategoryTreeDto categoryDto = new CategoryTreeDto();
+
+            categoryDto.setCategoryName(category.getCategoryName());
+            categoryDto.setCategoryId(category.getCategoryId()); // Initialize isExpanded to false
+            categoryDtoMap.put(category.getCategoryId(), categoryDto);
+            // If the category has no parent, add it to the root list
+            if (category.getParentCat() == null) {
+                rootCategoryDtos.add(categoryDto);
+            }
+        }
+
+        // Build the hierarchy
+        for (Category category : categories) {
+            if (category.getParentCat() != null) {
+                CategoryTreeDto parentDto = categoryDtoMap.get(category.getParentCat().getCategoryId());
+                if (parentDto != null) {
+                    if (parentDto.getSubCategories() == null) {
+                        parentDto.setSubCategories(new ArrayList<>());
+                    }
+                    parentDto.getSubCategories().add(categoryDtoMap.get(category.getCategoryId()));
+                    //parentDto.setExpanded(false);
+                }
+            }
+
+        }
         return rootCategoryDtos; // Return the top-level categories
     }
 
