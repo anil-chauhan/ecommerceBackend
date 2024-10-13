@@ -25,6 +25,7 @@ public class RequestLoggingFilter implements Filter {
         logger.info("Request Method: {}", httpRequest.getMethod());
         logger.info("Request URI: {}", httpRequest.getRequestURI());
         logger.info("Remote Address: {}", httpRequest.getRemoteAddr());
+        logger.info("Remote Address: {}", httpRequest.getRequestURI());
         
         // Log headers
         httpRequest.getHeaderNames().asIterator().forEachRemaining(headerName -> {
