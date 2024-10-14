@@ -31,7 +31,7 @@ public class Order {
     private int totalQuantity;
 
     @Column(name="total_price")
-    private BigDecimal totalPrice;
+    private Double totalPrice;
 
     @Column(name="status")
     private String status;
