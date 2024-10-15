@@ -25,10 +25,14 @@ public class Customer {
     @Column(name="last_name")
     private String lastName;
 
-    @Column(name="email")
+    @Column(name="email",unique=true)
     private String email;
 
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "customer")
+    private Set<Address> addressSet = new HashSet<Address>();
+
+
+    @OneToMany(mappedBy = "customer")
     private Set<Order> orderOlds = new HashSet<Order>();
 
     public void add(Order orderOld) {

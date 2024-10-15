@@ -7,6 +7,7 @@ import org.ecommerce.shared_database_api.dto.*;
 import org.ecommerce.shared_database_api.models.JsonDataModel;
 import org.ecommerce.shared_database_api.services.CheckoutService;
 import org.ecommerce.shared_database_api.services.JsonFileReader;
+import org.ecommerce.shared_database_api.services.OrderService;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -24,9 +25,14 @@ public class RazorpayController {
 
 	private final CheckoutService checkoutService;
 
-	public RazorpayController(CheckoutService checkoutService,JsonFileReader jsonFileReader) {
+	private final OrderService orderService;
+
+
+
+	public RazorpayController(CheckoutService checkoutService,JsonFileReader jsonFileReader,OrderService orderService) {
 		this.checkoutService = checkoutService;
 		this.jsonFileReader = jsonFileReader;
+		this.orderService = orderService;
 	}
 
 
@@ -59,6 +65,8 @@ public class RazorpayController {
 			response.setSecretKey(SECRET_KEY1);
 			response.setSecretId(SECRET_ID1);
 			response.setPgName("razor1");
+
+			purchase.getOrder().setRazorpayOrderId(orderId);
 
 			saveOrderDb(purchase);
 
@@ -100,6 +108,8 @@ public class RazorpayController {
 	//@RequestMapping(path = "/createOrder", method = RequestMethod.POST)
 	public RozerPayPaymentResponseModelDTO updatePaymentStatus(@RequestBody RozerPayPaymentRequestModelDTO rozerPayPaymentRequestModelDTO) {
 		RozerPayPaymentResponseModelDTO response = new RozerPayPaymentResponseModelDTO();
+		String s = orderService.updateOrderPaymentStatus(rozerPayPaymentRequestModelDTO);
+		response.setUpdateStatus(s);
 		return response;
 
 	}

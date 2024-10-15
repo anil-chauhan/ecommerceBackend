@@ -8,4 +8,6 @@ public class RozerPayPaymentResponseModelDTO {
     public String razorpay_payment_id;
     public String razorpay_order_id;
     public String razorpay_signature;
+    public String updateStatus;
+
 }

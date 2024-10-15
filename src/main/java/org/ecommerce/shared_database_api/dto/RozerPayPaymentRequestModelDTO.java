@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 public class RozerPayPaymentRequestModelDTO {
-    public String razorpay_payment_id;
-    public String razorpay_order_id;
-    public String razorpay_signature;
+    public String razorpayPaymentId;
+    public String razorpayOrderId;
+    public String razorpaySignature;
 }

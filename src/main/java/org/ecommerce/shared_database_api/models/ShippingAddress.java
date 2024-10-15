@@ -1,3 +1,4 @@
+/*
 package org.ecommerce.shared_database_api.models;
 
 import jakarta.persistence.*;
@@ -14,13 +15,13 @@ public class ShippingAddress {
     @Column(name = "shipping_addresses_id", nullable = false)
     private Integer shippingAddressesId;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
 
-    @Column(name = "full_address", nullable = false, length = Integer.MAX_VALUE)
-    private String fullAddress;
+    @Column(name="house_no")
+    private String houseNo;
+
+
+    @Column(name="street")
+    private String street;
 
     @Column(name = "state", nullable = false, length = 100)
     private String state;
@@ -28,9 +29,29 @@ public class ShippingAddress {
     @Column(name = "city", nullable = false, length = 100)
     private String city;
 
+
+    @Column(name="country")
+    private String country;
+
+
+
     @Column(name = "zip_code", nullable = false, length = 20)
     private String zipCode;
 
 
+    */
+/*@ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;*//*
+
+
+
+    */
+/*@Column(name = "full_address", nullable = false, length = Integer.MAX_VALUE)
+    private String fullAddress;*//*
+
+
 
 }
+*/

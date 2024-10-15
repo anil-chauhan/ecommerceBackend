@@ -22,7 +22,7 @@ public class OrderItem {
     private String imageUrl;
 
     @Column(name="unit_price")
-    private BigDecimal unitPrice;
+    private Double unitPrice;
 
     @Column(name="quantity")
     private int quantity;

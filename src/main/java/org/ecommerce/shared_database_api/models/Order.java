@@ -1,5 +1,6 @@
 package org.ecommerce.shared_database_api.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -33,8 +34,17 @@ public class Order {
     @Column(name="total_price")
     private Double totalPrice;
 
-    @Column(name="status")
-    private String status;
+    @Column(name="order_status")
+    private String orderStatus;
+
+    @Column(name="payment_status")
+    private String paymentStatus;
+
+    @Column(name="razorpay_payment_id")
+    private String razorpayPaymentId;
+
+    @Column(name="razorpay_order_id")
+    public String razorpayOrderId;
 
     @Column(name="date_created")
     @CreationTimestamp
@@ -44,19 +54,25 @@ public class Order {
     @UpdateTimestamp
     private Date lastUpdated;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "order")
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "order")
     private Set<OrderItem> orderItems = new HashSet<>();
 
+
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "shipping_address_id", referencedColumnName = "id")
-    private Address shippingAddress;
+    //@OneToOne(cascade = CascadeType.ALL)
+    //@JoinColumn(name = "shipping_addresses_id", referencedColumnName = "shipping_addresses_id")
+    //private ShippingAddress shippingAddress;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "billing_address_id", referencedColumnName = "id")
+
+    @JsonIgnore
+    @ManyToOne()
+    @JoinColumn(name = "billing_address_id")
     private Address billingAddress;
 
     public void add(OrderItem item) {

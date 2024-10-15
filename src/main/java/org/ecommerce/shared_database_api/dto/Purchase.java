@@ -1,10 +1,7 @@
 package org.ecommerce.shared_database_api.dto;
 
 import lombok.Data;
-import org.ecommerce.shared_database_api.models.Address;
-import org.ecommerce.shared_database_api.models.Customer;
-import org.ecommerce.shared_database_api.models.Order;
-import org.ecommerce.shared_database_api.models.OrderItem;
+import org.ecommerce.shared_database_api.models.*;
 
 import java.util.Set;
 
@@ -12,7 +9,7 @@ import java.util.Set;
 public class Purchase {
 
     private Customer customer;
-    private Address shippingAddress;
+    //private ShippingAddress shippingAddress;
     private Address billingAddress;
     private Order order;
     private Set<OrderItem> orderItems;

@@ -19,9 +19,9 @@ public class OrderShippingAddress {
     @JoinColumn(name = "order_id", nullable = false)
     private Order orderOld;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "shipping_address_id", nullable = false)
-    private ShippingAddress shippingAddress;
+    //@ManyToOne(fetch = FetchType.LAZY, optional = false)
+    //@JoinColumn(name = "shipping_address_id", nullable = false)
+    //private ShippingAddress shippingAddress;
 
     @Column(name = "full_address", nullable = false, length = Integer.MAX_VALUE)
     private String fullAddress;
