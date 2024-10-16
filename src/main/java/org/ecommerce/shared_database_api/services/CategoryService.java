@@ -179,6 +179,33 @@ public class CategoryService {
 
 
 
+    public List<Integer> getAllCategoryIdsByCategoryId(Integer categoryId) {
+        List<Integer> categoryIds = new ArrayList<>();
+        Category category = categoryRepository.findCategoryByCategoryId(categoryId);
+        if (category != null) {
+            collectCategoryIds(category, categoryIds);
+        }
+        return categoryIds;
+        //return null;
+    }
+
+    private void collectCategoryIds(Category category, List<Integer> categoryIds) {
+        // Add the current category ID to the list
+        categoryIds.add(category.getCategoryId());
+
+        // Recursively collect IDs from subcategories
+        if (category.getSubCategories() != null && !category.getSubCategories().isEmpty()) {
+            for (Category subCategory : category.getSubCategories()) {
+                collectCategoryIds(subCategory, categoryIds);
+            }
+        }
+    }
+
+
+
+
+
+
 
     private List<CategoryDto> buildCategory(List<Category> categories) {
         Map<Integer, CategoryDto> categoryDtoMap = new HashMap<>();
@@ -284,7 +311,7 @@ public class CategoryService {
             String categoryName = categoryTreeDto.getCategoryName();
             categoryDetailsDto.setCategoryName(categoryName);
             //categoryDetailsDtos.add(categoryDetailsDto);
-
+            categoryDetailsDto.setCategoryId(categoryTreeDto.getCategoryId());
             List<CategoryTreeDto> subCategoriesLevel1 = categoryTreeDto.getSubCategories();
 
             Integer categoryId = categoryTreeDto.getCategoryId();
@@ -299,6 +326,8 @@ public class CategoryService {
 
         return categoryDetailsDtos;
     }
+
+
 
 
 

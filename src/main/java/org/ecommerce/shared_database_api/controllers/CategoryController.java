@@ -7,6 +7,7 @@ import org.ecommerce.shared_database_api.dto.CategoryTreeDto;
 import org.ecommerce.shared_database_api.models.Category;
 import org.ecommerce.shared_database_api.models.User;
 import org.ecommerce.shared_database_api.services.CategoryService;
+import org.ecommerce.shared_database_api.services.ProductService;
 import org.ecommerce.shared_database_api.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PostAuthorize;
@@ -22,10 +23,12 @@ public class CategoryController {
 
 
     private final CategoryService categoryService;
+    private final ProductService productService;
 
     @Autowired
-    public CategoryController(CategoryService categoryService) {
+    public CategoryController(CategoryService categoryService,ProductService productService) {
         this.categoryService = categoryService;
+        this.productService = productService;
     }
 
 
@@ -103,6 +106,9 @@ public class CategoryController {
         return categoryService.getMenuCategoriesDetails();
 
     }
+
+
+
 
 
     @PostMapping("/is_sub_category_available")

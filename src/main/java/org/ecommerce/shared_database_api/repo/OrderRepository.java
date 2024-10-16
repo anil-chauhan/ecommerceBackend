@@ -30,8 +30,12 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
                                @Param("billingAddressId") Long billingAddressId,
                                @Param("OrderId") Long OrderId);
 
-    @Query(value = "select  ord from Order as  ord where ord.customer.email=:customerEmail")
+    @Query(value = "select  ord from Order as  ord where ord.customer.email=:customerEmail order by ord.lastUpdated desc ")
     ArrayList<Order> getOrdersByCustomerEmail(@Param("customerEmail") String customerEmail);
+
+
+    @Query(value = "select  ord from Order as  ord where ord.razorpayOrderId=:razorpayOrderId")
+    Order getOrderByRozerPayOrderID(@Param("razorpayOrderId") String razorpayOrderId);
 
 
 

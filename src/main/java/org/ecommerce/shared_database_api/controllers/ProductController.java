@@ -2,6 +2,7 @@ package org.ecommerce.shared_database_api.controllers;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.ecommerce.shared_database_api.dto.CategoryDetailsDto;
 import org.ecommerce.shared_database_api.dto.CategoryDto;
 import org.ecommerce.shared_database_api.dto.ProductDto;
 import org.ecommerce.shared_database_api.dto.ProductRequestParamDto;
@@ -217,6 +218,27 @@ public class ProductController {
         ProductDto allProductByName = productService.getProductById(productId);
         return allProductByName;
     }
+
+
+    @Data
+    static class AllProductByCategoryDTO{
+        Integer categoryId;
+    }
+
+
+    @PostMapping("/get_all_product_by_category_id")
+    //@PostAuthorize("hasRole('ADMIN')")
+    public  ArrayList<ProductDto> getAllProductByCategoryId(@RequestBody AllProductByCategoryDTO categoryId) {
+        //return categoryService.getAllCategories();
+        List<Integer> allCategoryIdsByCategoryId = categoryService.getAllCategoryIdsByCategoryId(categoryId.getCategoryId());
+
+        ArrayList<ProductDto> allProductByListCategoriesId = productService.getAllProductByListCategoriesId(allCategoryIdsByCategoryId);
+
+        return allProductByListCategoriesId;
+
+    }
+
+
 
 
 }

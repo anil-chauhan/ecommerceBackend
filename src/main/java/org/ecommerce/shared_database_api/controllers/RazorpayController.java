@@ -81,6 +81,35 @@ public class RazorpayController {
 	}
 
 
+
+
+	@PostMapping("/update_pending_payment")
+	//@RequestMapping(path = "/createOrder", method = RequestMethod.POST)
+	public RozerPayOderResponseModelDTO updatePendingPayment(@RequestBody RozerPayPaymentRequestModelDTO rozerPayPaymentRequestModelDTO) {
+		RozerPayOderResponseModelDTO response = new RozerPayOderResponseModelDTO();
+
+
+		String razorpayOrderId = rozerPayPaymentRequestModelDTO.getRazorpayOrderId();
+
+
+		org.ecommerce.shared_database_api.models.Order orderByRozerPayOrderID = orderService.getOrderByRozerPayOrderID(razorpayOrderId);
+
+		JsonDataModel jsonDataModel = jsonFileReader.readJsonFile();
+
+		String SECRET_KEY1=jsonDataModel.getKeyId();
+		String SECRET_ID1 =jsonDataModel.getKetSecret();
+		response.setSecretId(SECRET_ID1);
+		response.setPgName("razor1");
+		response.setSecretKey(SECRET_KEY1);
+		response.setRazorpayOrderId(orderByRozerPayOrderID.getRazorpayOrderId());
+		response.setApplicationFee("" + orderByRozerPayOrderID.getTotalPrice());
+		return response;
+
+	}
+
+
+
+
 	public PurchaseResponse saveOrderDb(Purchase purchase){
 		PurchaseResponse purchaseResponse = checkoutService.placeOrder(purchase);
 
@@ -100,6 +129,7 @@ public class RazorpayController {
 		options.put("payment_capture", 1); // You can enable this if you want to do Auto Capture.
 		return client.orders.create(options);
 	}
+
 
 
 

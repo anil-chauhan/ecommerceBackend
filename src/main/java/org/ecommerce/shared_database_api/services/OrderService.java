@@ -5,11 +5,11 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import org.ecommerce.shared_database_api.dto.RozerPayPaymentRequestModelDTO;
-import org.ecommerce.shared_database_api.dto.RozerPayPaymentResponseModelDTO;
+
 import org.ecommerce.shared_database_api.models.Address;
 import org.ecommerce.shared_database_api.models.Order;
 import org.ecommerce.shared_database_api.repo.AddressRepository;
-import org.ecommerce.shared_database_api.repo.CategoryRepository;
+
 import org.ecommerce.shared_database_api.repo.OrderRepository;
 import org.springframework.stereotype.Service;
 
@@ -88,6 +88,13 @@ public class OrderService {
         ArrayList<Order> ordersByCustomerEmail = orderRepository.getOrdersByCustomerEmail(customerEmail);
 
         return ordersByCustomerEmail;
+    }
+
+    public Order getOrderByRozerPayOrderID(String razorpayOrderId) {
+
+        Order orderByRozerPayOrderID = orderRepository.getOrderByRozerPayOrderID(razorpayOrderId);
+
+        return orderByRozerPayOrderID;
     }
 
 

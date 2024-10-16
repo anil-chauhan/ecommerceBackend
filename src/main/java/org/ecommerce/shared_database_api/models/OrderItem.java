@@ -1,5 +1,6 @@
 package org.ecommerce.shared_database_api.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -30,6 +31,8 @@ public class OrderItem {
     @Column(name="product_id")
     private Long productId;
 
+
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "order_id")
     private Order order;

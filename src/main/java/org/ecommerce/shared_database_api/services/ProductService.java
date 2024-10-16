@@ -103,6 +103,62 @@ public class ProductService {
     }
 
 
+
+    public  ArrayList<ProductDto> getAllProductByListCategoriesId(List<Integer> categoryIdList){
+
+        ArrayList<Product> mainList=new ArrayList<>();
+
+        for (Integer categoryId:categoryIdList) {
+
+            List<Product> save = productRepository.findProductByCategoryId(categoryId);
+            mainList.addAll(save);
+
+        }
+
+
+
+
+
+
+        ArrayList<ProductDto> productDtos = new ArrayList<>();
+        if(mainList!=null){
+
+            for(Product product : mainList){
+
+                ProductDto productDto=new ProductDto();
+                productDto.setProductId(product.getProductId());
+                productDto.setProductName(product.getProductName());
+                productDto.setDescription(product.getDescription());
+                productDto.setPrice(product.getPrice());
+                productDto.setUrlSlug(product.getUrlSlug());
+                productDto.setDescription(product.getDescription());
+                productDto.setStockQuantity(product.getStockQuantity());
+                productDto.setStatus(product.getStatus());
+                productDto.setBrand(product.getBrand());
+                productDto.setProductImageUrl(product.getProductImageUrl());
+                String s = convertImageToBase64(product.getProductImageUrl());
+                productDto.setProductImageUrl(s);
+                productDto.setCategoryId(product.getCat().getCategoryId());
+                //Category categoryById = categoryService.getCategoryById(productDto.getCategoryId());
+                //productDto.setCat(categoryById);
+                productDtos.add(productDto);
+            }
+
+
+
+            return productDtos;
+        }
+        else {
+            return null;
+        }
+
+
+
+    }
+
+
+
+
     public  List<ProductDto> getAllProductCountByCategoryId(Integer categoryId){
 
 

@@ -83,7 +83,8 @@ public class ProjectSecurityConfig {
                             ,"/create_category_by_name","/get_all_product_by_name","/get_product_by_id","/findByCountryCode",
                                     "/countries","/api/checkout/purchase","/get_all_product","/hello",
                                     "/get_all_category_details" ,"/get_all_trendy_product","/create_order",
-                                    "/update_payment_status","/find_orders_by_email")
+                                    "/update_payment_status","/find_orders_by_email","/update_pending_payment","/get_order_items_by_order_id",
+                                    "/get_all_product_by_category_id")
                             .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
                     .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
                     .requiresChannel(rcc -> rcc.anyRequest().requiresInsecure()) // Only HTTP
@@ -102,7 +103,8 @@ public class ProjectSecurityConfig {
                                     "/findByCountryCode","/countries","/api/checkout/purchase",
                                     "get_all_product","/hello","/get_all_category_details" ,
                                     "/get_all_trendy_product","create_order","/update_payment_status",
-                                    "/find_orders_by_email").permitAll());
+                                    "/find_orders_by_email","/update_pending_payment","/get_order_items_by_order_id",
+                                    "/get_all_product_by_category_id").permitAll());
             http.oauth2ResourceServer(rsc -> rsc.jwt(jwtConfigurer ->
                     jwtConfigurer.jwtAuthenticationConverter(jwtAuthenticationConverter)));
             /*http.oauth2ResourceServer(rsc -> rsc.opaqueToken(otc -> otc.authenticationConverter(new KeycloakOpaqueRoleConverter())

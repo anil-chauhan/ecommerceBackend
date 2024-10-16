@@ -9,6 +9,7 @@ import java.util.List;
 public class CategoryDetailsDto implements Serializable {
 
     String categoryName;
+    int categoryId;
     String productRandomImageUrl;
     int productCountInCategory;
 }
