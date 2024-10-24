@@ -3,7 +3,7 @@
 FROM  openjdk:21-jdk
 
 #RUN cd..
-RUN mvn install
+RUN mvn clean install
 #RUN cd /home/java/MyLuckAppProject
 #COPY  token_file.json token_file.json
 COPY  target/shared_database_api-0.0.1-SNAPSHOT.jar shared_database_api-0.0.1-SNAPSHOT.jar
