@@ -11,16 +11,16 @@ COPY src ./src
 RUN mvn clean install
 
 # Use a lightweight OpenJDK image for running the application
-FROM openjdk:21-jdk
+#FROM openjdk:21-jdk
 
 # Set the working directory
-WORKDIR /app
+#WORKDIR /app
 
 # Copy the JAR file from the build stage
-COPY --from=build /app/target/shared_database_api-0.0.1-SNAPSHOT.jar shared_database_api-0.0.1-SNAPSHOT.jar
+#COPY --from=build /app/target/shared_database_api-0.0.1-SNAPSHOT.jar shared_database_api-0.0.1-SNAPSHOT.jar
 
 # Set the entry point
-ENTRYPOINT ["java", "-jar", "shared_database_api-0.0.1-SNAPSHOT.jar"]
+#ENTRYPOINT ["java", "-jar", "shared_database_api-0.0.1-SNAPSHOT.jar"]
 
 
 
