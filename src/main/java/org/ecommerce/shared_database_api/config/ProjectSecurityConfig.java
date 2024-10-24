@@ -55,6 +55,7 @@ public class ProjectSecurityConfig {
                             origins.add("http://localhost:4200");
                             origins.add("http://192.168.29.198:4200");
                             origins.add("http://192.168.29.198:5005");
+                            origins.add("http://192.168.29.198:8090");
                             origins.add("http://localhost:5005");
 
                             config.setAllowedOrigins(origins);
@@ -80,18 +81,18 @@ public class ProjectSecurityConfig {
                     .csrf(csrfConfig -> csrfConfig.csrfTokenRequestHandler(csrfTokenRequestAttributeHandler)
                             .ignoringRequestMatchers("/contact", "/register","/create_category",
                                     "/add_product","/get_all_category","/get_all_product_from_a_category_by_name","/is_sub_category_available"
-                            ,"/create_category_by_name","/get_all_product_by_name","/get_product_by_id","/findByCountryCode",
+                            ,"/create_category_by_name","/get_all_product_by_name","/findByCountryCode",
                                     "/countries","/api/checkout/purchase","/get_all_product","/hello",
                                     "/get_all_category_details" ,"/get_all_trendy_product","/create_order",
                                     "/update_payment_status","/find_orders_by_email","/update_pending_payment","/get_order_items_by_order_id",
-                                    "/get_all_product_by_category_id")
+                                    "/get_all_product_by_category_id","/api/checkout/get_address_by_customer_email","/get_product_by_id")
                             .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
                     .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
                     .requiresChannel(rcc -> rcc.anyRequest().requiresInsecure()) // Only HTTP
                     .authorizeHttpRequests((requests) -> requests
                             .requestMatchers("/create_new_user").hasRole("USER")
                             //.requestMatchers("/create_category").hasRole("ADMIN")
-                            //.requestMatchers("/create_category").permitAll()
+                            //.requestMatchers("/get_product_by_id").hasRole("USER")
                             .requestMatchers("/myAccount").hasRole("USER")
                             .requestMatchers("/myBalance").hasAnyRole("USER", "ADMIN")
                             .requestMatchers("/myLoans").authenticated()
@@ -99,12 +100,13 @@ public class ProjectSecurityConfig {
                             .requestMatchers("/user").authenticated()
                             .requestMatchers("/notices", "/contact", "/error", "/create_category","/add_product",
                                     "/get_all_category","/get_all_product_from_a_category_by_name","/is_sub_category_available",
-                                    "/create_category_by_name","/get_all_product_by_name","/get_product_by_id",
+                                    "/create_category_by_name","/get_all_product_by_name",
                                     "/findByCountryCode","/countries","/api/checkout/purchase",
                                     "get_all_product","/hello","/get_all_category_details" ,
                                     "/get_all_trendy_product","create_order","/update_payment_status",
                                     "/find_orders_by_email","/update_pending_payment","/get_order_items_by_order_id",
-                                    "/get_all_product_by_category_id").permitAll());
+                                    "/get_all_product_by_category_id","/api/checkout/get_address_by_customer_email",
+                                    "/get_product_by_id").permitAll());
             http.oauth2ResourceServer(rsc -> rsc.jwt(jwtConfigurer ->
                     jwtConfigurer.jwtAuthenticationConverter(jwtAuthenticationConverter)));
             /*http.oauth2ResourceServer(rsc -> rsc.opaqueToken(otc -> otc.authenticationConverter(new KeycloakOpaqueRoleConverter())

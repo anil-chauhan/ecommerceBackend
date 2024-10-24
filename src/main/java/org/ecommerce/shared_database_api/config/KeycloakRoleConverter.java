@@ -18,7 +18,7 @@ public class KeycloakRoleConverter implements Converter<Jwt, Collection<GrantedA
         Collection<GrantedAuthority> realmAccessRoles = extractRolesFromAccess(source, "realm_access");
 
         // Extract roles from "resource_access" (example for "eazypublicclient" - you might need to adjust this)
-        Collection<GrantedAuthority> resourceAccessRoles = extractRolesFromResourceAccess(source, "eazypublicclient");
+        Collection<GrantedAuthority> resourceAccessRoles = extractRolesFromResourceAccess(source, "ecommerceBackend");
 
         // Combine both roles
         realmAccessRoles.addAll(resourceAccessRoles);

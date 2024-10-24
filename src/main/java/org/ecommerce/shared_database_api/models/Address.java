@@ -1,5 +1,6 @@
 package org.ecommerce.shared_database_api.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.base.Charsets;
 import com.google.common.hash.Hashing;
 import jakarta.persistence.*;
@@ -41,10 +42,13 @@ public class Address {
     @Column(name="zip_code")
     private String zipCode;
 
+    @JsonIgnore
     @OneToOne
     @PrimaryKeyJoinColumn
     private Order order;
 
+
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;

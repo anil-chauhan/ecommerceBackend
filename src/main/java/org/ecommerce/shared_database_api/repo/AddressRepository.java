@@ -14,4 +14,9 @@ public interface AddressRepository extends JpaRepository<Address, Long> {
 
     @Query(value = "select adrs from Address as adrs where adrs.addressHash=:address_hash")
     Address findAddressByHash(@Param("address_hash") String address_hash);
+
+
+    @Query(value = "select adrs from Address as adrs where adrs.customer.email=:email")
+    Address getAddressByCustomerId(@Param("email") String email);
+
 }

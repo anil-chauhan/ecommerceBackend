@@ -1,0 +1,29 @@
+version: '3'
+services:
+  keycloak:
+    image: quay.io/keycloak/keycloak:25.0.0
+    command: start-dev
+    restart: always
+    #links:
+    #  - postgres
+    ports:
+      - "8090:8080"
+    environment:
+      KEYCLOAK_ADMIN : admin
+      KEYCLOAK_ADMIN_PASSWORD: admin@1234
+      KC_DB: postgres
+      KC_DB_SCHEMA: public
+      KC_DB_USERNAME: admin
+      KC_DB_PASSWORD: 4VXMJpfxfPkSZS5I3KbsrOU4E
+      #KC_DB_URL: jdbc:postgresql://postgres:5432/keycloak
+      KC_DB_URL: jdbc:postgresql://postgres_database:5432/keycloak_db
+      KC_HOSTNAME: 192.168.29.198
+      TZ: Asia/Kolkata  # Set timezone to India (Asia/Kolkata)
+      KEYCLOAK_FRONTEND_URL: http://192.168.29.198:8090
+    networks:
+      - my-network
+networks:
+  my-network:
+    external: true
+
+

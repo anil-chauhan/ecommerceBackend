@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  postgres_db:
+    image: postgres:latest
+    container_name: postgres_database
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: 4VXMJpfxfPkSZS5I3KbsrOU4E
+      POSTGRES_USER: admin
+      POSTGRES_DB: ecommerce_shop
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /root/project/postgres_db/postgres_db_postgres_data/_data
+
+networks:
+  my-network:
+    external: true

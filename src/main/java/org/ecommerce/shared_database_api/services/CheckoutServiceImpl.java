@@ -1,6 +1,7 @@
 package org.ecommerce.shared_database_api.services;
 
 import jakarta.transaction.Transactional;
+import org.ecommerce.shared_database_api.dto.AddressDTO;
 import org.ecommerce.shared_database_api.dto.Purchase;
 import org.ecommerce.shared_database_api.dto.PurchaseResponse;
 import org.ecommerce.shared_database_api.models.*;
@@ -184,6 +185,26 @@ public class CheckoutServiceImpl implements CheckoutService {
         //
         return UUID.randomUUID().toString();
     }
+
+    public AddressDTO getAddressByCustomerEmail(String customerEmail) {
+
+        Address addressByCustomerId = addressRepository.getAddressByCustomerId(customerEmail);
+
+        AddressDTO addressDTO = new AddressDTO();
+
+        addressDTO.setId(addressByCustomerId.getId());
+        addressDTO.setHouseNo(addressByCustomerId.getHouseNo());
+        addressDTO.setStreet(addressByCustomerId.getStreet());
+        addressDTO.setCity(addressByCustomerId.getCity());
+        addressDTO.setState(addressByCustomerId.getState());
+        addressDTO.setZipCode(addressByCustomerId.getZipCode());
+        addressDTO.setCountry(addressByCustomerId.getCountry());
+
+
+        return addressDTO;
+
+    }
+
 }
 
 
