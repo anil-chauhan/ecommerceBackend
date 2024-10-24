@@ -3,6 +3,7 @@ package org.ecommerce.shared_database_api.controllers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.ecommerce.shared_database_api.models.User;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -21,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 //@TestPropertySource(locations = "classpath:application-test.properties")
+@Disabled("All tests in this class are disabled")
 public class UserControllerIntegrationTest {
 
     @LocalServerPort

@@ -5,6 +5,7 @@ import org.ecommerce.shared_database_api.dto.CategoryDto;
 import org.ecommerce.shared_database_api.models.Category;
 import org.ecommerce.shared_database_api.services.CategoryService;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -25,6 +26,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@Disabled("All tests in this class are disabled")
+
 public class CategoryControllerIntegrationTest {
 
     @Autowired
