@@ -2,6 +2,12 @@
 
 FROM  openjdk:21-jdk
 
+
+# Install Maven
+RUN apt-get update && \
+    apt-get install -y maven && \
+    apt-get clean
+
 #RUN cd..
 RUN mvn clean install
 #RUN cd /home/java/MyLuckAppProject
