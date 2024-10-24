@@ -1,0 +1,28 @@
+version: '3.3'
+services:
+
+
+  my_strategy_entry:
+    container_name: ecommerce_back_end_spring_container
+    build: .
+      #depends_on:
+      #- expressvpn01
+    #- standalone-chrome01
+    networks:
+      - my-network
+    ports:
+      - '8098:8098'
+    #environment:
+    #  - MONGO_HOST=mongodb
+
+
+
+# Replace 'existing-network' with the name of your existing network
+networks:
+  my-network:
+    external: true
+
+
+#docker-compose up --force-recreate
+
+#docker-compose down --rmi all

@@ -18,7 +18,7 @@ FROM openjdk:21-jdk
 WORKDIR /app
 
 # Copy the JAR file from the build stage
-COPY --from=build /app/target/shared_database_api-0.0.1-SNAPSHOT.jar shared_database_api-0.0.1-SNAPSHOT.jar
+COPY --from=build /app/target/ecommerce_back_end_spring-0.0.1-SNAPSHOT.jar ecommerce_back_end_spring-0.0.1-SNAPSHOT.jar
 
 # Set the entry point
-ENTRYPOINT ["java", "-jar", "shared_database_api-0.0.1-SNAPSHOT.jar"]
+ENTRYPOINT ["java", "-jar", "ecommerce_back_end_spring-0.0.1-SNAPSHOT.jar"]

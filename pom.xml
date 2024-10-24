@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>org.ecommerce</groupId>
-    <artifactId>shared_database_api</artifactId>
+    <artifactId>ecommerce_back_end_spring</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>shared_database_api</name>
-    <description>shared_database_api</description>
+    <name>ecommerce_back_end_spring</name>
+    <description>ecommerce_back_end_spring</description>
     <url/>
     <licenses>
         <license/>
